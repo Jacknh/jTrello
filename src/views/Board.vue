@@ -1,27 +1,23 @@
 <template>
-  <div class="board">
-    <div class="tw-flex tw-flex-row tw-items-start">
-      <BoardColumn
-        v-for="(column, columnIndex) of board.columns"
-        :key="columnIndex"
-        :column="column"
-        :columnIndex="columnIndex"
-      />
-      <div class="column tw-flex">
-        <input
-          type="text"
-          class="tw-p-2 tw-mr-2 tw-flex-grow"
-          placeholder="New Column Name"
-          v-model="newColumnName"
-          @keyup.enter="createColumn"
-        />
-      </div>
-    </div>
-
-    <div class="task-bg" v-if="isTaskOpen" @click.self="close">
-      <router-view />
-    </div>
-  </div>
+  <v-container fluid>
+    <v-row>
+      <v-col v-for="(column, columnIndex) of board.columns" :key="columnIndex">
+        <BoardColumn :column="column" :columnIndex="columnIndex" />
+      </v-col>
+    </v-row>
+    <v-btn
+      absolute
+      dark
+      fab
+      bottom
+      right
+      color="cyan accent-2"
+      style="bottom: 20px"
+    >
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+    <router-view v-if="isTaskOpen" />
+  </v-container>
 </template>
 
 <script>
@@ -41,9 +37,6 @@ export default {
     };
   },
   methods: {
-    close() {
-      this.$router.push({ name: "board" });
-    },
     createColumn() {
       this.$store.commit("CREATE_COLUMN", { name: this.newColumnName });
       this.newColumnName = "";
@@ -52,15 +45,4 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
-.board {
-  @apply tw-p-4 tw-bg-teal-dark tw-h-full tw-overflow-auto;
-}
-.column {
-  @apply tw-bg-grey-light tw-p-2 tw-mr-4 tw-text-left tw-shadow tw-rounded;
-}
-.task-bg {
-  @apply tw-pin tw-absolute;
-  background: rgba(0, 0, 0, 0.5);
-}
-</style>
+<style lang="scss" scoped></style>

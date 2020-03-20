@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import defaultBoard from "./default-board";
-import { saveStatePlugin, uuid } from "./utils";
+import defaultBoard from "../default-board";
+import { saveStatePlugin, uuid } from "../utils";
 
 Vue.use(Vuex);
 
@@ -39,8 +39,9 @@ export default new Vuex.Store({
         tasks: []
       });
     },
-    UPDATE_TASK(state, { task, key, value }) {
-      task[key] = value;
+    UPDATE_TASK(state, { task, name, description }) {
+      task.name = name;
+      task.description = description;
     },
     MOVE_TASK(state, { fromColumnIndex, toTasks, fromTaskIndex, toTaskIndex }) {
       const fromTasks = state.board.columns[fromColumnIndex].tasks;

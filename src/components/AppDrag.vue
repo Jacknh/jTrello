@@ -1,9 +1,5 @@
 <template>
-  <div
-    draggable
-    @dragstart.self="onDrag"
-    @click="onClick"
-  >
+  <div draggable @dragstart.self="onDrag" @click="onClick">
     <slot />
   </div>
 </template>
@@ -16,13 +12,13 @@ export default {
     }
   },
   methods: {
-    onDrag (e) {
-      e.dataTransfer.dropEffect = 'move'
-      e.dataTransfer.setData('payload', JSON.stringify(this.transferData))
+    onDrag(e) {
+      e.dataTransfer.dropEffect = "move";
+      e.dataTransfer.setData("payload", JSON.stringify(this.transferData));
     },
-    onClick () {
-      this.$emit('click')
+    onClick() {
+      this.$emit("click");
     }
   }
-}
+};
 </script>

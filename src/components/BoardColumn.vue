@@ -1,54 +1,73 @@
 <template>
-  <AppDrop
-    @drop="moveTaskOrColumn"
-    class="column"
-  >
-   <AppDrag
-    :transferData="{
-      type: 'column',
-      fromColumnIndex: columnIndex
-    }"
+  <AppDrop @drop="moveTaskOrColumn">
+    <AppDrag
+      :transferData="{
+        type: 'column',
+        fromColumnIndex: columnIndex
+      }"
     >
-    <div class="tw-flex tw-items-center tw-mb-2 tw-font-bold">{{ column.name }}</div>
-    <div class="tw-list-reset">
-      <ColumnTask
-        v-for="(task, taskIndex) of column.tasks"
-        :key="taskIndex"
-        :task='task'
-        :taskIndex='taskIndex'
-        :column='column'
-        :columnIndex='columnIndex'
-        />
-      <input
-        type="text"
-        class="tw-block tw-p-2 tw-w-full tw-bg-transparent"
-        placeholder="+ Enter new task"
-        @keyup.enter="createTask($event, column.tasks)"
-      />
-    </div>
-   </AppDrag>
+      <v-card color="#dae1e7">
+        <v-card-title class="column__name">{{ column.name }}</v-card-title>
+        <v-card-text
+          v-for="(task, taskIndex) of column.tasks"
+          :key="taskIndex"
+          class="column__item"
+          :style="{ paddingTop: taskIndex === 0 ? '10px' : '' }"
+        >
+          <ColumnTask
+            :task="task"
+            :taskIndex="taskIndex"
+            :column="column"
+            :columnIndex="columnIndex"
+          />
+        </v-card-text>
+        <v-card-actions class="column__action">
+          <v-text-field
+            v-model="newTask"
+            placeholder="+ Enter new task"
+            @keyup.enter="createTask($event, column.tasks)"
+          />
+        </v-card-actions>
+      </v-card>
+    </AppDrag>
   </AppDrop>
 </template>
 <script>
-import ColumnTask from './ColumnTask'
-import tasksAndColumnsMixin from '@/mixins/tasksAndColumnsMixin.js'
-import AppDrag from './AppDrag'
-import AppDrop from './AppDrop'
+import ColumnTask from "./ColumnTask";
+import tasksAndColumnsMixin from "@/mixins/tasksAndColumnsMixin.js";
+import AppDrag from "./AppDrag";
+import AppDrop from "./AppDrop";
 
 export default {
   components: { ColumnTask, AppDrop, AppDrag },
   mixins: [tasksAndColumnsMixin],
+  data() {
+    return {
+      newTask: ""
+    };
+  },
   methods: {
-    createTask (e, tasks) {
-      this.$store.commit('CREATE_TASK', { tasks, name: e.target.value })
-      e.target.value = ''
+    createTask(e, tasks) {
+      this.$store.commit("CREATE_TASK", { tasks, name: e.target.value });
+      this.newTask = "";
     }
   }
-}
+};
 </script>
-<style lang="postcss" scoped>
-.column {
-  @apply tw-bg-grey-light tw-p-2 tw-mr-4 tw-text-left tw-shadow tw-rounded tw-flex-1;
+<style lang="scss" scoped>
+.column__name {
+  padding: 8px 16px 0px;
 }
-
+.column__item {
+  background: #fff;
+  border-radius: 5px;
+  width: 95%;
+  margin: 10px auto;
+  text-align: left;
+  padding: 10px;
+  color: #222;
+}
+.column__action {
+  padding: 0px 8px;
+}
 </style>

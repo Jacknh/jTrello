@@ -1,27 +1,29 @@
 <template>
-  <div class="task-view">
-    <div
-      class="tw-flex tw-flex-col tw-flex-grow tw-items-start tw-justify-between tw-px-4"
-    >
-      <input
-        type="text"
-        class="tw-p-2 tw-w-full tw-mr-2 tw-block tw-text-xl tw-font-bold"
-        :value="task.name"
-        @change="updateTaskProperty($event, 'name')"
-        @keyup.enter="updateTaskProperty($event, 'name')"
-      />
-      <textarea
-        class="tw-relative tw-w-full tw-bg-transparent tw-px-2 tw-border tw-mt-2 tw-h-64 tw-border-none tw-leading-normal"
-        :value="task.description"
-        @change="updateTaskProperty($event, 'description')"
-      />
-    </div>
+  <div class="task-bg" @click.self="close">
+    <v-container class="task-view">
+      <v-text-field outlined label="Name" v-model="name"></v-text-field>
+      <v-textarea
+        outlined
+        label="Description"
+        v-model="description"
+      ></v-textarea>
+    </v-container>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
+  created() {
+    this.name = this.task.name;
+    this.description = this.task.description;
+  },
+  data() {
+    return {
+      name: "",
+      description: ""
+    };
+  },
   computed: {
     ...mapGetters(["getTask"]),
     task() {
@@ -29,20 +31,32 @@ export default {
     }
   },
   methods: {
-    updateTaskProperty(e, key) {
+    close() {
       this.$store.commit("UPDATE_TASK", {
         task: this.task,
-        key,
-        value: e.target.value
+        name: this.name,
+        description: this.description
       });
+      this.$router.push({ name: "board" });
     }
   }
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
+.task-bg {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 .task-view {
-  @apply tw-relative tw-flex tw-flex-row tw-bg-white tw-pin tw-mx-4 tw-m-32 tw-mx-auto tw-py-4 tw-text-left tw-rounded tw-shadow;
+  background: #fff;
   max-width: 700px;
+  margin: 120px auto;
+  border-radius: 4px;
+  padding: 20px;
 }
 </style>
