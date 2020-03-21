@@ -7,7 +7,19 @@
       }"
     >
       <v-card color="#dae1e7">
-        <v-card-title class="column__name">{{ column.name }}</v-card-title>
+        <v-card-title class="column__name d-flex justify-space-between"
+          >{{ column.name }}
+          <v-btn
+            fab
+            dark
+            width="20px"
+            height="20px"
+            color="indigo lighten-2"
+            @click="dialog = true"
+          >
+            <v-icon style="height:20px" dark>mdi-minus</v-icon>
+          </v-btn>
+        </v-card-title>
         <v-card-text
           v-for="(task, taskIndex) of column.tasks"
           :key="taskIndex"
@@ -29,6 +41,27 @@
           />
         </v-card-actions>
       </v-card>
+      <v-dialog v-model="dialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Warning</v-card-title>
+
+          <v-card-text>
+            Are you sure to delete the column ?
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="indigo darken-1" text @click="dialog = false">
+              Cancel
+            </v-btn>
+
+            <v-btn color="indigo darken-1" text @click="removeColumn">
+              Yes
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </AppDrag>
   </AppDrop>
 </template>
@@ -43,13 +76,18 @@ export default {
   mixins: [tasksAndColumnsMixin],
   data() {
     return {
-      newTask: ""
+      newTask: "",
+      dialog: false
     };
   },
   methods: {
     createTask(e, tasks) {
       this.$store.commit("CREATE_TASK", { tasks, name: e.target.value });
       this.newTask = "";
+    },
+    removeColumn() {
+      this.$store.commit("REMOVE_COLUMN", { columnIndex: this.columnIndex });
+      this.dialog = false;
     }
   }
 };

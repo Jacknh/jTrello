@@ -11,7 +11,7 @@
       fab
       bottom
       right
-      color="cyan accent-2"
+      color="purple lighten-1"
       style="bottom: 20px"
       @click="openDialog"
     >
