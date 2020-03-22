@@ -11,9 +11,23 @@
       fab
       bottom
       right
-      color="purple lighten-1"
+      small
+      color="red lighten-1"
+      style="bottom: 70px"
+      @click="openDialog('remove')"
+    >
+      <v-icon>mdi-minus</v-icon>
+    </v-btn>
+    <v-btn
+      absolute
+      dark
+      fab
+      bottom
+      right
+      small
+      color="green lighten-1"
       style="bottom: 20px"
-      @click="openDialog"
+      @click="openDialog('create')"
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>
@@ -21,9 +35,9 @@
       <v-card style="padding-top: 40px">
         <v-card-text>
           <v-text-field
-            label="New Column Name"
+            :label="columnLabel[type]"
             outlined
-            v-model="newColumnName"
+            v-model="columnName"
             @keydown.enter="closeDialog"
           ></v-text-field>
         </v-card-text>
@@ -46,19 +60,30 @@ export default {
   },
   data() {
     return {
-      newColumnName: "",
-      dialog: false
+      columnLabel: ["Type in column name to remove", "New column name"],
+      columnName: "",
+      dialog: false,
+      type: 0
     };
   },
   methods: {
     closeDialog() {
-      if (this.newColumnName === "") return;
-      this.$store.commit("CREATE_COLUMN", { name: this.newColumnName });
-      this.newColumnName = "";
+      if (this.columnName === "") return;
+      if (this.type === 0) {
+        this.$store.commit("REMOVE_COLUMN", { name: this.columnName });
+      } else {
+        this.$store.commit("CREATE_COLUMN", { name: this.columnName });
+      }
+      this.columnName = "";
       this.dialog = false;
     },
-    openDialog() {
-      this.newColumnName = "";
+    openDialog(type) {
+      if (type === "remove") {
+        this.type = 0;
+      } else {
+        this.type = 1;
+      }
+      this.columnName = "";
       this.dialog = true;
     }
   }

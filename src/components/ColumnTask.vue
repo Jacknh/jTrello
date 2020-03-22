@@ -1,19 +1,17 @@
 <template>
   <AppDrop @drop="moveTaskOrColumn">
     <AppDrag
-      class="task"
       :transferData="{
         type: 'task',
         fromTaskIndex: taskIndex,
         fromColumnIndex: columnIndex
       }"
-      @click="goToTask(task)"
     >
-      <div class="font-weight-bold subtitle-1">
-        {{ task.name }}
-      </div>
-      <div class="body-2" v-if="task.description">
-        {{ task.description }}
+      <div
+        class="font-weight-bold subtitle-1 d-flex justify-space-between"
+        @click.self="goToTask(task)"
+      >
+        <div>{{ task.name }}</div>
       </div>
     </AppDrag>
   </AppDrop>
