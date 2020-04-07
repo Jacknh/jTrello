@@ -3,7 +3,7 @@
     <AppDrag
       :transferData="{
         type: 'column',
-        fromColumnIndex: columnIndex
+        fromColumnIndex: columnIndex,
       }"
     >
       <v-card color="#dae1e7">
@@ -34,6 +34,8 @@
         </v-card-text>
         <v-card-actions class="column__action">
           <v-text-field
+            draggable
+            @dragstart.stop.prevent
             v-model="newTask"
             placeholder="+ Enter new task"
             @keyup.enter="createTask($event, column.tasks)"
@@ -76,7 +78,7 @@ export default {
   data() {
     return {
       newTask: "",
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
@@ -87,8 +89,8 @@ export default {
     clearColumn() {
       this.$store.commit("CLEAR_COLUMN", { columnIndex: this.columnIndex });
       this.dialog = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
