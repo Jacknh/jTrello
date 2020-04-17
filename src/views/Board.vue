@@ -11,12 +11,12 @@
       fab
       bottom
       right
-      small
+      x-small
       color="red lighten-1"
-      style="bottom: 70px"
+      style="bottom: 60px"
       @click="openDialog('remove')"
     >
-      <v-icon>mdi-minus</v-icon>
+      <i class="fas fa-minus"></i>
     </v-btn>
     <v-btn
       absolute
@@ -24,12 +24,12 @@
       fab
       bottom
       right
-      small
+      x-small
       color="green lighten-1"
       style="bottom: 20px"
       @click="openDialog('create')"
     >
-      <v-icon>mdi-plus</v-icon>
+      <i class="fas fa-plus"></i>
     </v-btn>
     <v-dialog v-model="dialog" max-width="500px" @click:outside="closeDialog">
       <v-card style="padding-top: 40px">
