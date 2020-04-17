@@ -1,11 +1,9 @@
-$bg-color: #38a89d;
-
 html {
   overflow-y: auto;
 }
 
 #app {
-  background: $bg-color;
+  background-image: linear-gradient(to top, rgba(255,0,0,0), #38a89d);
 }
 
 .hover-pointer {
