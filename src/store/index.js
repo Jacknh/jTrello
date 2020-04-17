@@ -6,15 +6,17 @@ import { saveStatePlugin, uuid } from "../utils";
 Vue.use(Vuex);
 
 const board = JSON.parse(localStorage.getItem("board")) || defaultBoard;
+const token = localStorage.getItem("token");
 
 export default new Vuex.Store({
   plugins: [saveStatePlugin],
   state: {
-    board
+    isAuthenticated: !!token,
+    board,
   },
   getters: {
     getTask(state) {
-      return id => {
+      return (id) => {
         for (const column of state.board.columns) {
           for (const task of column.tasks) {
             if (task.id === id) {
@@ -23,24 +25,26 @@ export default new Vuex.Store({
           }
         }
       };
-    }
+    },
   },
   mutations: {
     CREATE_TASK(state, { tasks, name }) {
       tasks.push({
         name,
         id: uuid(),
-        description: ""
+        description: "",
       });
     },
     CREATE_COLUMN(state, { name }) {
       state.board.columns.push({
         name,
-        tasks: []
+        tasks: [],
       });
     },
     REMOVE_COLUMN(state, { name }) {
-      const idx = state.board.columns.findIndex(column => column.name === name);
+      const idx = state.board.columns.findIndex(
+        (column) => column.name === name
+      );
       state.board.columns.splice(idx, 1);
     },
     CLEAR_COLUMN(state, { columnIndex }) {
@@ -59,6 +63,6 @@ export default new Vuex.Store({
       const columns = state.board.columns;
       const cloumnToMove = columns.splice(fromColumnIndex, 1)[0];
       columns.splice(toColumnIndex, 0, cloumnToMove);
-    }
-  }
+    },
+  },
 });

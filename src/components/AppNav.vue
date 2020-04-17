@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="title"><i class="fab fa-trello"></i> jTrello</div>
-    <div>
+    <div v-if="isAuthenticated">
       <i class="fas fa-user-circle avatar" @click.stop="dropdown = true"></i>
       <ul v-if="dropdown" class="dropdown" @click.stop>
         <li class="first-li">Jack Zhang</li>
@@ -13,11 +13,15 @@
   </div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
       dropdown: false,
     };
+  },
+  computed: {
+    ...mapState(['isAuthenticated'])
   },
   watch: {
     dropdown(val) {
@@ -41,7 +45,7 @@ $bg-color: #38a89d;
   justify-content: space-between;
   padding: 15px 25px;
   background: $bg-color;
-  box-shadow: 0px 10px 20px #38a89d;
+  box-shadow: 0px 0px 2px #38a89d;
   color: #fff;
 
   .title {

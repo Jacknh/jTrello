@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="wrapper">
     <v-row>
       <v-col v-for="(column, columnIndex) of board.columns" :key="columnIndex">
         <BoardColumn :column="column" :columnIndex="columnIndex" />
@@ -90,4 +90,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.wrapper {
+  height: 100%;
+  background-image: linear-gradient(to top, rgba(255, 0, 0, 0), #38a89d);
+}
+</style>
