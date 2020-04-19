@@ -67,6 +67,7 @@
   </AppDrop>
 </template>
 <script>
+import { mapActions } from "vuex";
 import ColumnTask from "./ColumnTask";
 import tasksAndColumnsMixin from "@/mixins/tasksAndColumnsMixin.js";
 import AppDrag from "./AppDrag";
@@ -82,12 +83,13 @@ export default {
     };
   },
   methods: {
-    createTask(e, tasks) {
-      this.$store.commit("CREATE_TASK", { tasks, name: e.target.value });
+    ...mapActions(["addTask", "deleteTasks"]),
+    createTask(e) {
+      this.addTask({ id: this.column._id, name: e.target.value });
       this.newTask = "";
     },
     clearColumn() {
-      this.$store.commit("CLEAR_COLUMN", { columnIndex: this.columnIndex });
+      this.deleteTasks(this.column._id);
       this.dialog = false;
     },
   },

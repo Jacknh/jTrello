@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import BoardColumn from "../components/BoardColumn";
 export default {
   components: { BoardColumn },
@@ -56,23 +56,27 @@ export default {
     ...mapState(["board"]),
     isTaskOpen() {
       return this.$route.name === "task";
-    }
+    },
+  },
+  created() {
+    this.fetchBoard();
   },
   data() {
     return {
       columnLabel: ["Type in column name to remove", "New column name"],
       columnName: "",
       dialog: false,
-      type: 0
+      type: 0,
     };
   },
   methods: {
+    ...mapActions(["fetchBoard", "addColumn", "deleteColumn"]),
     closeDialog() {
       if (this.columnName === "") return;
       if (this.type === 0) {
-        this.$store.commit("REMOVE_COLUMN", { name: this.columnName });
+        this.deleteColumn({ name: this.columnName });
       } else {
-        this.$store.commit("CREATE_COLUMN", { name: this.columnName });
+        this.addColumn({ name: this.columnName });
       }
       this.columnName = "";
       this.dialog = false;
@@ -85,8 +89,8 @@ export default {
       }
       this.columnName = "";
       this.dialog = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

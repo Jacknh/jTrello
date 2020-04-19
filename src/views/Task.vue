@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   created() {
     this.name = this.task.name;
@@ -21,25 +21,30 @@ export default {
   data() {
     return {
       name: "",
-      description: ""
+      description: "",
     };
   },
   computed: {
-    ...mapGetters(["getTask"]),
+    ...mapGetters(["getTask", "getColumn"]),
     task() {
       return this.getTask(this.$route.params.id);
-    }
+    },
+    column() {
+      return this.getColumn(this.$route.params.id);
+    },
   },
   methods: {
+    ...mapActions(["updateTask"]),
     close() {
-      this.$store.commit("UPDATE_TASK", {
-        task: this.task,
+      this.updateTask({
+        columnId: this.column._id,
+        taskId: this.task._id,
         name: this.name,
-        description: this.description
+        description: this.description,
       });
       this.$router.push({ name: "board" });
-    }
-  }
+    },
+  },
 };
 </script>
 

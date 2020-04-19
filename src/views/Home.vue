@@ -8,7 +8,7 @@
         To leverage your workflow, let's get started!
       </h3>
       <p v-if="!isAuthenticated">
-        You may need to <span class="auth">login</span> or
+        You may need to <span class="auth" @click="goLogin">login</span> or
         <span class="auth" @click="goRegister">register</span> first
       </p>
       <img
@@ -16,6 +16,7 @@
         src="../assets/icons8-go-back-64.png"
         alt="go"
         class="hover-pointer img"
+        @click="goBoard"
       />
     </div>
   </div>
@@ -31,6 +32,12 @@ export default {
     goRegister() {
       this.$router.push("/register");
     },
+    goLogin() {
+      this.$router.push("/login");
+    },
+    goBoard() {
+      this.$router.push("/board");
+    },
   },
 };
 </script>
@@ -43,7 +50,7 @@ export default {
   color: #f1f1f1;
   text-align: center;
   height: 100%;
-  background-image: linear-gradient(to top, rgba(255,0,0,0), #38a89d);
+  background-image: linear-gradient(to top, rgba(255, 0, 0, 0), #38a89d);
 
   h1 {
     font-size: 60px;
@@ -60,6 +67,7 @@ export default {
   }
   .img {
     transform: rotate(180deg);
+    margin-top: 120px;
   }
 }
 </style>

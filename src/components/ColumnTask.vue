@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     goToTask(task) {
-      this.$router.push({ name: "task", params: { id: task.id } });
+      this.$router.push({ name: "task", params: { id: task._id } });
     }
   }
 };
