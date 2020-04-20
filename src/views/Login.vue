@@ -71,9 +71,17 @@ export default {
       this.login({
         email: this.email,
         password: this.password,
-      }).then(() => {
-        this.$router.push("/board");
-      });
+      })
+        .then(() => {
+          this.$router.push("/board");
+        })
+        .catch((error) => {
+          this.$notify({
+            group: "auth",
+            duration: 2000,
+            text: error.response.data,
+          });
+        });
     },
     clear() {
       this.$v.$reset();
