@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="title"><i class="fab fa-trello"></i> jTrello</div>
+    <div class="title" @click="goHome"><i class="fab fa-trello"></i> jTrello</div>
     <div v-if="isAuthenticated">
       <i class="fas fa-user-circle avatar" @click.stop="dropdown = true"></i>
       <ul v-if="dropdown" class="dropdown" @click.stop>
@@ -43,6 +43,9 @@ export default {
       this.dropdown = false;
       this.logout();
       this.$router.push('/');
+    },
+    goHome() {
+      this.$router.push('/')
     }
   },
   beforeDestroy() {
