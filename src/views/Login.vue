@@ -21,6 +21,11 @@
     ></v-text-field>
     <v-btn class="mr-4" @click="submit">login</v-btn>
     <v-btn @click="clear">clear</v-btn>
+    <div class="register-link">
+      Don't have an account?<router-link to="/register">
+        Register.
+      </router-link>
+    </div>
   </form>
 </template>
 
@@ -83,5 +88,9 @@ export default {
 .form {
   width: 500px;
   margin: 100px auto;
+}
+.register-link {
+  margin-top: 20px;
+  font-size: 13px;
 }
 </style>

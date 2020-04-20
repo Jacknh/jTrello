@@ -4,8 +4,8 @@
     <div v-if="isAuthenticated">
       <i class="fas fa-user-circle avatar" @click.stop="dropdown = true"></i>
       <ul v-if="dropdown" class="dropdown" @click.stop>
-        <li class="first-li">Jack Zhang</li>
-        <li class="last-li" @click="dropdown = false">
+        <li class="first-li">{{ userName }}</li>
+        <li class="last-li" @click="signout">
           <i class="fas fa-sign-out-alt"></i> Signout
         </li>
       </ul>
@@ -13,15 +13,20 @@
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
+import { mapState, mapActions } from "vuex";
 export default {
+  created() {
+    if (this.isAuthenticated) {
+      this.getMe();
+    }
+  },
   data() {
     return {
       dropdown: false,
     };
   },
   computed: {
-    ...mapState(['isAuthenticated'])
+    ...mapState(["isAuthenticated", "userName"]),
   },
   watch: {
     dropdown(val) {
@@ -29,12 +34,20 @@ export default {
         window.addEventListener("click", () => {
           this.dropdown = false;
         });
-      } else {
-        window.removeEventListener("click");
-      }
+      } 
     },
   },
-  methods: {},
+  methods: {
+    ...mapActions(['logout', 'getMe']),
+    signout() {
+      this.dropdown = false;
+      this.logout();
+      this.$router.push('/');
+    }
+  },
+  beforeDestroy() {
+    window.removeEventListener("click");
+  }
 };
 </script>
 <style lang="scss" scoped>

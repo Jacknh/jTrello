@@ -8,7 +8,7 @@ import Login from "../views/Login.vue";
 
 Vue.use(Router);
 
-export default new Router({
+const router =  new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -31,6 +31,7 @@ export default new Router({
       path: "/board",
       name: "board",
       component: Board,
+      meta: {requiresAuth: true},
       children: [
         {
           path: "task/:id",
@@ -41,3 +42,15 @@ export default new Router({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("token");
+  if (to.matched.some(record => record.meta.requiresAuth) && !token ) {
+    next('/')
+  }
+  else {
+    next();
+  }
+})
+
+export default router;

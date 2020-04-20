@@ -1,3 +1,5 @@
+import {mapActions} from 'vuex'
+
 export default {
   props: {
     column: {
@@ -10,26 +12,24 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['moveColumn', 'moveTask']),
     moveTaskOrColumn(transferData) {
       if (transferData.type === "task") {
-        this.moveTask(transferData);
+        this._moveTask(transferData);
       } else {
-        this.moveColumn(transferData);
+        this._moveColumn(transferData);
       }
     },
-    moveTask({ fromColumnIndex, fromTaskIndex }) {
-      this.$store.commit("MOVE_TASK", {
+    _moveTask({ fromColumnIndex, fromTaskIndex }) {
+      this.moveTask({
         fromTaskIndex,
         fromColumnIndex,
-        toTasks: this.column.tasks,
+        toColumnId: this.column._id,
         toTaskIndex: this.taskIndex
       });
     },
-    moveColumn({ fromColumnIndex }) {
-      this.$store.commit("MOVE_COLUMN", {
-        fromColumnIndex,
-        toColumnIndex: this.columnIndex
-      });
+    _moveColumn({ fromColumnIndex }) {
+      this.moveColumn({ fromColumnIndex, toColumnIndex: this.columnIndex });
     }
   }
 };

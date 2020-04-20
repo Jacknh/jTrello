@@ -41,48 +41,20 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    CREATE_TASK(state, { tasks, name }) {
-      tasks.push({
-        name,
-        description: "",
-      });
-    },
-    ADD_COLUMN(state, name) {
-      state.board.columns.push({
-        name,
-        tasks: [],
-      });
-    },
-    REMOVE_COLUMN(state, { name }) {
-      const idx = state.board.columns.findIndex(
-        (column) => column.name === name
-      );
-      state.board.columns.splice(idx, 1);
-    },
-    CLEAR_COLUMN(state, { columnIndex }) {
-      state.board.columns[columnIndex].tasks = [];
-    },
-    UPDATE_TASK(state, { task, name, description }) {
-      task.name = name;
-      task.description = description;
-    },
-    MOVE_TASK(state, { fromColumnIndex, toTasks, fromTaskIndex, toTaskIndex }) {
-      const fromTasks = state.board.columns[fromColumnIndex].tasks;
-      const task = fromTasks.splice(fromTaskIndex, 1)[0];
-      toTasks.splice(toTaskIndex, 0, task);
-    },
-    MOVE_COLUMN(state, { fromColumnIndex, toColumnIndex }) {
-      const columns = state.board.columns;
-      const cloumnToMove = columns.splice(fromColumnIndex, 1)[0];
-      columns.splice(toColumnIndex, 0, cloumnToMove);
-    },
-
     SET_BOARD(state, board) {
       state.board = board;
     },
     SET_USERNAME(state, name) {
       state.userName = name;
     },
+    SET_AUTH(state, payload) {
+      state.isAuthenticated = payload;
+    },
+    RESET_STATE(state) {
+      state.isAuthenticated = false;
+      state.userName = '';
+      state.board = {}
+    }
   },
   actions: {
     register({ commit }, payload) {
@@ -90,12 +62,24 @@ export default new Vuex.Store({
         localStorage.setItem("token", data.token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
         commit("SET_USERNAME", data.name);
+        commit("SET_AUTH", true);
       });
     },
     login({ commit }, payload) {
       return axios.post("/auth/login", { ...payload }).then(({ data }) => {
         localStorage.setItem("token", data.token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+        commit("SET_USERNAME", data.name);
+        commit("SET_AUTH", true);
+      });
+    },
+    logout({ commit }) {
+      localStorage.removeItem("token");
+      axios.defaults.headers.common["Authorization"] = null;
+      commit("RESET_STATE");
+    },
+    getMe({ commit }) {
+      return axios.get("/auth/getMe").then(({ data }) => {
         commit("SET_USERNAME", data.name);
       });
     },
@@ -138,6 +122,18 @@ export default new Vuex.Store({
       return axios.delete(`/board/column/${id}/task`).then(({ data }) => {
         commit("SET_BOARD", data.board);
       });
+    },
+    moveColumn({ commit }, payload) {
+      return axios.put("/board/column", { ...payload }).then(({ data }) => {
+        commit("SET_BOARD", data.board);
+      });
+    },
+    moveTask({ commit }, payload) {
+      return axios
+        .put(`/board/column/task`, { ...payload })
+        .then(({ data }) => {
+          commit("SET_BOARD", data.board);
+        });
     },
   },
 });
