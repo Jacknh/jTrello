@@ -19,19 +19,21 @@
             @click="dialog = true"
           ></v-img>
         </v-card-title>
-        <v-card-text
-          v-for="(task, taskIndex) of column.tasks"
-          :key="taskIndex"
-          class="column__item"
-          :style="{ paddingTop: taskIndex === 0 ? '10px' : '' }"
-        >
-          <ColumnTask
-            :task="task"
-            :taskIndex="taskIndex"
-            :column="column"
-            :columnIndex="columnIndex"
-          />
-        </v-card-text>
+        <div class="task__wrapper">
+          <v-card-text
+            v-for="(task, taskIndex) of column.tasks"
+            :key="taskIndex"
+            class="column__item"
+            :style="{ paddingTop: taskIndex === 0 ? '10px' : '' }"
+          >
+            <ColumnTask
+              :task="task"
+              :taskIndex="taskIndex"
+              :column="column"
+              :columnIndex="columnIndex"
+            />
+          </v-card-text>
+        </div>
         <v-card-actions class="column__action">
           <v-text-field
             draggable
@@ -97,7 +99,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .column__name {
-  padding: 8px 16px 0px;
+  padding: 8px 16px;
 }
 .column__item {
   background: #fff;
@@ -110,5 +112,9 @@ export default {
 }
 .column__action {
   padding: 0px 8px;
+}
+.task__wrapper {
+  max-height: 58vh;
+  overflow: auto;
 }
 </style>

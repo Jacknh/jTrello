@@ -2,6 +2,18 @@ html {
   overflow-y: auto;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  
+}
+::-webkit-scrollbar-track {
+  background: rgb(218, 225, 231);
+}
+::-webkit-scrollbar-thumb {
+  background: #38a89d;
+  border-radius: 4px;
+}
+
 .hover-pointer {
   cursor: pointer;
 }
