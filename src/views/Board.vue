@@ -72,7 +72,7 @@ export default {
   methods: {
     ...mapActions(["fetchBoard", "addColumn", "deleteColumn"]),
     closeDialog() {
-      if (this.columnName === "") return;
+      if (this.columnName.trim() === "") return;
       if (this.type === 0) {
         this.deleteColumn({ name: this.columnName });
       } else {
